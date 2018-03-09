@@ -52,22 +52,25 @@ var octopus = function() {
 		return AFStoken = ''.join(random.choice(string.ascii_uppercase + string.digits)
         for x in xrange(32))
 	}
+	function Nonce() {
+		return Math.floor(Math.random() * 20).toString();
+	}
 
 	// Yelp api key: Z6vEu8oKl556q0tsFr2wgEgH2EDJqBbtD_7CphzrcP_q4Hdh4IPhnp13QK0O9z7kr3YT7eQkPX9yI38KxZGkDl0IFtKXCLfiQ87Uy788eTQXjGJejsW-Ogd8_RlyWnYx
 
 	// Calling Yelp API for their search and reviews functions
 	function getYelpSearch() {
 		var search_url = "https://api.yelp.com/v3/businesses/search"
-		var consumer_secret = ""
-		var token = ""
+		var consumer_key = "dPK0KQ89N6pfloM2KW53w"
+		var consumer_secret = "Z6vEu8oKl556q0tsFr2wgEgH2EDJqBbtD_7CphzrcP_q4Hdh4IPhnp13QK0O9z7kr3YT7eQkPX9yI38KxZGkDl0IFtKXCLfiQ87Uy788eTQXjGJejsW-Ogd8_RlyWnYx"
 
 		// Ajax-request parameters
 		var parameters = {
-			oauth_user_secret: "",
-			oauth_token: "",
-			oauth_signature_method: "",
+			oauth_consumer_key: consumer_key,
+			oauth_token: consumer_secret,
+			oauth_signature_method: "HMAC-SHA1",
 			oauth_timestamp: Math.round((new Date()).getTime()/1000.0),
-			oauth_nonce:
+			oauth_nonce: Nonce()
 			oauth_version: '1.0',
 			callback: 'cb',
 			term: locations.title,
