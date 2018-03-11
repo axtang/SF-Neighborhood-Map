@@ -2,15 +2,20 @@
 <html>
   <head>
   	<meta charset="utf-88">
-  	<meta name="viewport" content="width=device-width, nitial-scale=1.0">
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
   	<title>San Francisco Neighborhood Map</title>
   	<link rel="stylesheet" href="css/styles.css">
-  	<link rel="stylesheet" href="css/bootstrap.min.css">
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  	<script src="js/bootstrap.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   	<script type="text/javascript" src="http://oauth.googlecode.com/svn/code/javascript/oauth.js"></script>
   	<script type="text/javascript" src="http://oauth.googlecode.com/svn/code/javascript/sha1.js"></script>
+    <script src="js/app.js"></script>
+
+    
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyCZpiNXRoBPjPUacqN3fkY5F0eg17yicdI&center=-33.9,151.14999999999998&zoom=12&format=png&maptype=roadmap&style=feature:administrative.land_parcel%7Celement:labels%7Cvisibility:off&style=feature:administrative.neighborhood%7Ccolor:0xffeb3b&style=feature:administrative.neighborhood%7Celement:geometry.stroke%7Cvisibility:off&style=feature:poi%7Celement:labels.text%7Cvisibility:off&style=feature:poi.attraction%7Ccolor:0xffeb3b&style=feature:road.local%7Celement:labels%7Cvisibility:off&style=feature:transit.station%7Cweight:1.5&size=480x360"></script>
 
   </head>
 
@@ -29,23 +34,13 @@
 		  		</ul>
 		  	</div>
 		  	<div class="menu">
-		  		<a href="#menu-toggle" class="btn btn-default" id="menu-toggle">
-		  			
-		  		</a>
+		  		<a href="#menu-toggle" class="btn btn-default" id="menu-toggle"></a>
 		  	</div>
 	  	</div>
-	    <div id="map"></div>
+	    <div id="map"> 
+      </div>
 	</div>
-    <script src="js/app.js"></script>
-    <script src="js/markers.js"></script>
-    <script src="js/octopus.js"></script>
 
-    <script src="js/styles.js"></script>
     
-
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyCZpiNXRoBPjPUacqN3fkY5F0eg17yicdI&center=-33.9,151.14999999999998&zoom=12&format=png&maptype=roadmap&style=feature:administrative.land_parcel%7Celement:labels%7Cvisibility:off&style=feature:administrative.neighborhood%7Ccolor:0xffeb3b&style=feature:administrative.neighborhood%7Celement:geometry.stroke%7Cvisibility:off&style=feature:poi%7Celement:labels.text%7Cvisibility:off&style=feature:poi.attraction%7Ccolor:0xffeb3b&style=feature:road.local%7Celement:labels%7Cvisibility:off&style=feature:transit.station%7Cweight:1.5&size=480x360
-">
-    </script>
   </body>
 </html>
