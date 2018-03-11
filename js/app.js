@@ -47,71 +47,32 @@ var octopus = function() {
 	var markers = [];
 	var infoWindow;
 
-	// Generate anti-forgery state token for Yelp API Oauth
-	function AFStoken() {
-		return AFStoken = ''.join(random.choice(string.ascii_uppercase + string.digits)
-        for x in xrange(32))
-	}
-	function Nonce() {
-		return Math.floor(Math.random() * 20).toString();
-	}
-
-	// Yelp api key: Z6vEu8oKl556q0tsFr2wgEgH2EDJqBbtD_7CphzrcP_q4Hdh4IPhnp13QK0O9z7kr3YT7eQkPX9yI38KxZGkDl0IFtKXCLfiQ87Uy788eTQXjGJejsW-Ogd8_RlyWnYx
-
 	// Calling Yelp API for their search and reviews functions
 	function getYelpSearch() {
-		var search_url = "https://api.yelp.com/v3/businesses/search"
-		var consumer_key = "dPK0KQ89N6pfloM2KW53w"
-		var consumer_secret = "Z6vEu8oKl556q0tsFr2wgEgH2EDJqBbtD_7CphzrcP_q4Hdh4IPhnp13QK0O9z7kr3YT7eQkPX9yI38KxZGkDl0IFtKXCLfiQ87Uy788eTQXjGJejsW-Ogd8_RlyWnYx"
 
-		// Ajax-request parameters
-		var parameters = {
-			oauth_consumer_key: consumer_key,
-			oauth_token: consumer_secret,
-			oauth_signature_method: "HMAC-SHA1",
-			oauth_timestamp: Math.round((new Date()).getTime()/1000.0),
-			oauth_nonce: Nonce()
-			oauth_version: '1.0',
-			callback: 'cb',
-			term: locations.title,
-			location: 'San Francisco, CA',
-			limit: 1
-		}
+		const yelp = require('yelp-fusion');
+		// Place holder for Yelp Fusion's API Key. Grab them
+		// from https://www.yelp.com/developers/v3/manage_app
+		const apiKey = 'E6aW2ikgxQGFRFbdpyPfUGr9ElR3Ie29RFR6YI_OgJXeBUL7XjPD3dgdbgdumZ836300GoRUmHryG0pBq2KSxH1Df82xTEOsFCppVPms3tQRUDjjbJeDdAvWYxajWnYx';
 
-		// Generate Oauth signature
-		var encodedSignature = oauthSignature.generate('GET, search_url, parameters, consumer_secret, token_secret');
-		parameters.oauth_signature = encodedSignature;
+		const searchRequest = {
+		  term: locations.title,
+		  location: 'san francisco, ca',
+		  parameters: parameters,
+		};
 
-		$.ajax({
-			url: search_url,
-			data: parameters,
-			cache: true,
-			dataType: 'jsonp'
-		}).done(function(data){
-			var rating = data.businesses[0].rating_img_url;
-			var review_count = data.businesses[0].review_count;
-			var phone = data.businesses[0].display_phone;
-			var snippet = data.businesses[0].snippet_text;
-			var link = data.business[0].url;
-			var category = data.businesses[0].categories[0][0];
-			var picture = data.businesses[0].image_url;
+		const client = yelp.client(apiKey);
 
-			// display local information on the infoWindow
-			var content = '<div><h3>' + locations.title + '</h3>' + 
-			'<img href=">' + picture + '">' +
-			'<p>' + place.address + '</p>' +
-			'<p><strong>Category: </strong>' + category + '</p>' + 
-			'<p><strong>Yelp Ratings: </strong>' + 
-			'<p><strong>Number of reviews: </strong>' +
-			'<p><strong>Phone: </strong>' + phone +'</p>' + 
-			'<img src = "' + rating + '"></p>' +
-			'<p><strong>Reviews: </strong>' + snippet + '<a href="' + link + '">Read more</a></p>' +
-			'</div>';
-		}). fail(function() {
-			alert("Yelp review failed to load. Please try again.")
+		client.search(searchRequest).then(response => {
+		  const firstResult = response.jsonBody.businesses[0];
+		  const prettyJson = JSON.stringify(firstResult, null, 4);
+		  console.log(prettyJson);
+		}).catch(e => {
+		  console.log(e);
 		});
 	}
 
+	// Initiate map
 	function initMap(){
 		var map = new google.maps.Map(document.getElementById('map'), {
 			zoom: 13,
