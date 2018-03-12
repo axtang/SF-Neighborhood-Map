@@ -39,6 +39,7 @@ var locations = [
 ]
 
 
+// model function
 var octopus = function() {
 	var self = this;
 	this.locationsModel = locations;
@@ -490,6 +491,8 @@ var octopus = function() {
 }
 
 
+
+// View function
 var mapView = function() {
 	var self = this;
 
