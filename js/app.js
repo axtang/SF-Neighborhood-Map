@@ -92,7 +92,6 @@ function getYelpSearch() {
 // GOogle JavaScript Maps API
 // Set variables as global 
 var markers = [];
-var infoWindow;
 
 // If map failed to load
 function mapError() {
@@ -311,7 +310,7 @@ function initMap() {
 			    {},
 			    {}
 					]
-		infoWindow = new google.maps.InfoWindow();
+		var infoWindow = new google.maps.InfoWindow();
 		var geocoding = new google.maps.Geocoding();
 
 		locations.forEach(function(location){
