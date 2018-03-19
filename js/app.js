@@ -311,7 +311,7 @@ function initMap() {
 			    {},
 			    {}
 					]
-		infoWindow = new google.maps.InfoWindow();
+		infoWindow = new google.maps.infoWindow();
 		var geocoding = new google.maps.Geocoding();
 
 		locations.forEach(function(location){
