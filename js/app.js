@@ -356,7 +356,7 @@ function geocodeAddress(geocoder, resultsMap, place) {
 }
 
 // Make the marker jump when clicked
-function toggleBounce() {
+function toggleBounce(marker) {
 	if (marker.getAnimation() !== null) {
 		marker.setAnimation(null);
 	} else {
