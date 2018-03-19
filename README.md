@@ -2,6 +2,11 @@
 
 This is a one-page web application displaying San Francisco locations marked on a Google map. This application is built on a Knockout.js framework, with map style from Google Maps API and location information from Yelp Search API.
 
+## Prerequisites
+
+1. JavaScript.
+2. 
+
 ## Installation
 
 1. Download this application from GitHub by clicking the "Clone or Download" drop down.
