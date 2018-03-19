@@ -81,6 +81,8 @@ function getYelpSearch() {
 		'<img src = "' + rating + '"></p>' +
 		'<p><strong>Reviews: </strong>' + snippet + '<a href="' + link + '">Read more</a></p>' +
 		'</div>';
+		infoWindow.setContent(contentString);
+		infoWindow.open(map, place.marker);
 	}). fail(function() {
 		alert("Yelp review failed to load. Please try again.")
 	});
@@ -309,10 +311,7 @@ function initMap() {
 			    {},
 			    {}
 					]
-		var infowindow = new google.maps.InfoWindow({
-			content: contentString,
-			maxWidth: 200
-		});
+		infoWindow = new google.maps.InfoWindow();
 		var geocoding = new google.maps.Geocoding();
 
 		locations.forEach(function(location){
