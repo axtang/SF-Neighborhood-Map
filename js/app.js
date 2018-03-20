@@ -103,7 +103,7 @@ function mapError() {
 function initMap() {
 	var map = new google.maps.Map(document.getElementById('map'), {
 		zoom: 13,
-		center: location,
+		center: {lat: 37.8024, lng: 122.4058},
 		mapTypeControl: true,
 		mapTypeControlOption: {
 			style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
