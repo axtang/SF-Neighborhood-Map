@@ -311,8 +311,9 @@ function initMap() {
 			    {}
 					]});
 		var infoWindow = new google.maps.InfoWindow();
-		var geocoding = new google.maps.Geocoding();
+		var geocoding = new google.maps.Geocoder();
 
+		// Using the addresses to get the Lat and Lng thru geocodeAddress.
 		locations.forEach(function(location){
 			geocodeAddress(geocoding, map, location);
 		});
@@ -322,13 +323,13 @@ function initMap() {
 }
 
 // Converting the addresses into lats and lngs
-function geocodeAddress(geocoder, resultsMap, place) {
+function geocodeAddress(geocoding, resultsMap, place) {
 	// grab the street address from markers.js
 	var address = locations.streetAddress
 
 	// If the address exists, place a marker on the location
 	// Else, return error message
-	geocoder.geocode({'address': address}, function(results, status){
+	geocoding.geocode({'address': address}, function(results, status){
 		if (status === 'OK') {
 			resultsMap.setCenter(results[0].geometry.location);
 			place.marker = new google.maps.Marker({
