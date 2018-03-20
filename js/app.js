@@ -309,7 +309,7 @@ function initMap() {
 			    {},
 			    {},
 			    {}
-					]
+					]});
 		var infoWindow = new google.maps.InfoWindow();
 		var geocoding = new google.maps.Geocoding();
 
@@ -337,7 +337,7 @@ function geocodeAddress(geocoder, resultsMap, place) {
 				animation: google.Maps.Animation.DROP
 			});
 
-			google.maps.event.addLIstener(place.marker, 'click', function) {
+			google.maps.event.addLIstener(place.marker, 'click', function()) {
 				getYelpSearch(location);
 				toggleBounce(place.marker);
 			});
