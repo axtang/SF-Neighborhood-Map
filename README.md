@@ -14,4 +14,4 @@ This is a one-page web application displaying San Francisco locations marked on 
 3. Once navigate to the folder, open the application by clicking on `map.html`.
 
 ## Credit
-The tyle of this map is from https://snazzymaps.com/style/93/lost-in-the-desert.
+The tyle of this map is from https://snazzymaps.com/style/20053/multi-brand-network.
