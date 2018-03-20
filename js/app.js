@@ -38,79 +38,7 @@ var locations = [
 }
 ];
 
-
-// Yelp Search API
-function getYelpSearch() {
-	const search_url = "https://api.yelp.com/v3/businesses/search";
-	const yelp = require('yelp-fusion');
-	// Place holder for Yelp Fusion's API Key. Grab them
-	// from https://www.yelp.com/developers/v3/manage_app
-	const apiKey = 'E6aW2ikgxQGFRFbdpyPfUGr9ElR3Ie29RFR6YI_OgJXeBUL7XjPD3dgdbgdumZ836300GoRUmHryG0pBq2KSxH1Df82xTEOsFCppVPms3tQRUDjjbJeDdAvWYxajWnYx';
-
-	parameters = [];
-	parameters.push(['term', terms]);
-	parameters.push(['location', near]);
-	parameters.push(['callback', 'cb']);
-	parameters.push(['oauth_consumer_key', auth.consumerKey]);
-	parameters.push(['oauth_consumer_secret', auth.consumerSecret]);
-	parameters.push(['oauth_token', auth.accessToken]);
-	parameters.push(['oauth_signature_method', 'HMAC-SHA1']);
-
-	$.ajax({
-		url: search_url,
-		data: parameters,
-		cache: true,
-		dataType: 'jsonp'
-	}).done(function(data){
-		var rating = data.businesses[0].rating_img_url;
-		var review_count = data.businesses[0].review_count;
-		var phone = data.businesses[0].display_phone;
-		var snippet = data.businesses[0].snippet_text;
-		var link = data.business[0].url;
-		var category = data.businesses[0].categories[0][0];
-		var picture = data.businesses[0].image_url;
-
-		// display local information on the infoWindow
-		var content = '<div><h3>' + locations.title + '</h3>' + 
-		'<img href=">' + picture + '">' +
-		'<p>' + place.address + '</p>' +
-		'<p><strong>Category: </strong>' + category + '</p>' + 
-		'<p><strong>Yelp Ratings: </strong>' + 
-		'<p><strong>Number of reviews: </strong>' +
-		'<p><strong>Phone: </strong>' + phone +'</p>' + 
-		'<img src = "' + rating + '"></p>' +
-		'<p><strong>Reviews: </strong>' + snippet + '<a href="' + link + '">Read more</a></p>' +
-		'</div>';
-		infoWindow.setContent(contentString);
-		infoWindow.open(map, place.marker);
-	}). fail(function() {
-		alert("Yelp review failed to load. Please try again.")
-	});
-}
-
-
-// GOogle JavaScript Maps API
-// Set variables as global 
-var markers = [];
-
-// If map failed to load
-function mapError() {
-	alert("Google Map failed to load. Please try again.")
-}
-
-// Google maps
-// Initiate map
-function initMap() {
-	var map = new google.maps.Map(document.getElementById('map'), {
-		zoom: 13,
-		// Set center at Coit Tower
-		center: {lat: 37.8024, lng: 122.4058},
-		mapTypeControl: true,
-		mapTypeControlOption: {
-			style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
-			position: google.maps.ControlPosition.BOTTOM_CENTER
-		},
-		styles: [
+var styles = [
 			    {
 			        "elementType": "labels",
 			        "stylers": [
@@ -309,24 +237,48 @@ function initMap() {
 			    },
 			    {},
 			    {},
-			    {}
-					]});
-		var infoWindow = new google.maps.InfoWindow();
-		var geocoding = new google.maps.Geocoder();
+			    {}];
 
-		// Using the addresses to get the Lat and Lng thru geocodeAddress.
-		locations.forEach(function(location){
-			geocodeAddress(geocoding, map, location);
-		});
 
-		ko.applyBindings(new mapView());
+// GOogle JavaScript Maps API
+// Set variables as global 
+var markers = [];
+
+// If map failed to load
+function mapError() {
+	alert("Google Map failed to load. Please try again.")
+}
+
+// Google maps
+// Initiate map
+function initMap() {
+	var map = new google.maps.Map(document.getElementById('map'), {
+		zoom: 13,
+		// Set center at Coit Tower
+		center: {lat: 37.8024, lng: 122.4058},
+		mapTypeControl: true,
+		mapTypeControlOption: {
+			style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+			position: google.maps.ControlPosition.BOTTOM_CENTER
+		},
+		styles: styles
+	});
+	var infoWindow = new google.maps.InfoWindow();
+	var geocoding = new google.maps.Geocoder();
+
+	// Using the addresses to get the Lat and Lng thru geocodeAddress.
+	Locations.forEach(function(location){
+		geocodeAddress(geocoding, map, location);
+	});
+
+	ko.applyBindings(new mapView());
 
 }
 
 // Converting the addresses into lats and lngs
 function geocodeAddress(geocoding, resultsMap, place) {
 	// grab the street address from markers.js
-	var address = locations.streetAddress
+	var address = Locations.streetAddress
 
 	// If the address exists, place a marker on the location
 	// Else, return error message
@@ -375,67 +327,54 @@ function clickedMarker(name) {
 	});
 }
 
-// Adding a search box to a map with autocomplete feature
-function initAutocomplete() {
-	// creat the search box and link it to the UI element
-	var input = document.getElementById('pac-input');
-	var searchBox = new google.maps.locations.SearchBox(input);
-	map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
-	// bias the search box results towards the current map's viewport
-	map.addListener('bounds_changed', function() {
-		searchBox.setBounds(map.getBounds());
+// Yelp Search API
+function getYelpSearch() {
+	const search_url = "https://api.yelp.com/v3/businesses/search";
+	const yelp = require('yelp-fusion');
+	// Place holder for Yelp Fusion's API Key. Grab them
+	// from https://www.yelp.com/developers/v3/manage_app
+	const apiKey = 'E6aW2ikgxQGFRFbdpyPfUGr9ElR3Ie29RFR6YI_OgJXeBUL7XjPD3dgdbgdumZ836300GoRUmHryG0pBq2KSxH1Df82xTEOsFCppVPms3tQRUDjjbJeDdAvWYxajWnYx';
+
+	parameters = [];
+	parameters.push(['term', terms]);
+	parameters.push(['location', near]);
+	parameters.push(['callback', 'cb']);
+	parameters.push(['oauth_consumer_key', auth.consumerKey]);
+	parameters.push(['oauth_consumer_secret', auth.consumerSecret]);
+	parameters.push(['oauth_token', auth.accessToken]);
+	parameters.push(['oauth_signature_method', 'HMAC-SHA1']);
+
+	$.ajax({
+		url: search_url,
+		data: parameters,
+		cache: true,
+		dataType: 'jsonp'
+	}).done(function(data){
+		var rating = data.businesses[0].rating_img_url;
+		var review_count = data.businesses[0].review_count;
+		var phone = data.businesses[0].display_phone;
+		var snippet = data.businesses[0].snippet_text;
+		var link = data.business[0].url;
+		var category = data.businesses[0].categories[0][0];
+		var picture = data.businesses[0].image_url;
+
+		// display local information on the infoWindow
+		var content = '<div><h3>' + locations.title + '</h3>' + 
+		'<img href=">' + picture + '">' +
+		'<p>' + place.address + '</p>' +
+		'<p><strong>Category: </strong>' + category + '</p>' + 
+		'<p><strong>Yelp Ratings: </strong>' + 
+		'<p><strong>Number of reviews: </strong>' +
+		'<p><strong>Phone: </strong>' + phone +'</p>' + 
+		'<img src = "' + rating + '"></p>' +
+		'<p><strong>Reviews: </strong>' + snippet + '<a href="' + link + '">Read more</a></p>' +
+		'</div>';
+		infoWindow.setContent(contentString);
+		infoWindow.open(map, place.marker);
+	}). fail(function() {
+		alert("Yelp review failed to load. Please try again.")
 	});
-
-	var markers = [];
-	
-	// listen for the event fired when the user selects a prediction
-	// and retrieve more details for that place
-	searchBox.addListener('places_changed', function() {
-		var places = searchBox.getPlaces();
-
-		if (places.length == 0) {
-			return;
-		}
-
-		// clear out old markers
-		markers.forEach(function(marker){
-			marker.setmap(null);
-		});
-		markers = [];
-
-		// for each place, get the icon, name and location
-		var bounds = new google.maps.LatLngBounds();
-		places.forEach(function(place){
-			if (!place.geometry) {
-				console.log("Returned place contains no geometry");
-				return;
-			}
-			var icon = {
-				url: place.icon,
-				size: new google.maps.Size(71, 71),
-				origin: new google.maps.Point(0, 0),
-				anchor: new google.maps.Point(17, 34),
-				scaledSize: new google.maps.Size(25, 25)
-			};
-
-			// create a marker for each place
-			markers.push(new google.maps.Marker({
-				map: map,
-				icon: icon,
-				title: place.name,
-				position: place.geometry.location
-			}));
-
-			if (place.geometry.viewport) {
-				// only geocodes have viewport
-				bounds.union(place.geometry.viewport);
-			} else {
-				bounds.extend(place.geometry.location);
-			}
-		});
-		map.fitBounds(bounds);
-	});	
 }
 
 
