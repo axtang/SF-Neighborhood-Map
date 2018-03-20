@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-  	<meta charset="utf-88">
+  	<meta charset="utf-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1.0">
   	<title>San Francisco Neighborhood Map</title>
   	<link rel="stylesheet" href="css/styles.css">
@@ -37,16 +37,13 @@
 	    <div id="map"> 
       </div>
 	</div>
+  <script src="js/app.js"></script>
   <script>
     $("#menu-toggle").click(function(e){
       e.preventDefault();
       $("wrapper").toggleClass("toggled");
     });
   </script>
-
-  @section Scripts {
-    @Scripts.Render("js/app.js")
-  }
   <script async defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtDPqHpdtLeRkNH9Sqz5FpZUFi4aW7cpk&callback=initMap" type="text/javascript">
   </script>"
