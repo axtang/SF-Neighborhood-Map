@@ -337,9 +337,9 @@ function geocodeAddress(geocoder, resultsMap, place) {
 				animation: google.Maps.Animation.DROP
 			});
 
-			google.maps.event.addLIstener(place.marker, 'click', function()) {
+			google.maps.event.addListener(place.marker, 'click', function() {
 				getYelpSearch(location);
-				toggleBounce(place.marker);
+				toggleBounce(location.marker);
 			});
 
 			markers.push ({
