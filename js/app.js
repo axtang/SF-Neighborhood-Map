@@ -1,6 +1,14 @@
 'use strict';
 
-var locations = [
+// Set global variables.
+var ko;
+var google;
+var map;
+var markers;
+var geocoder;
+var infoWindow;
+
+var Locations = [
 
 {
 	title: "Palace of Fine Art Theatre",
@@ -38,276 +46,327 @@ var locations = [
 }
 ];
 
+
+// Google maps styles.
 var styles = [
-			    {
-			        "elementType": "labels",
-			        "stylers": [
-			            {
-			                "visibility": "off"
-			            },
-			            {
-			                "color": "#f49f53"
-			            }
-			        ]
-			    },
-			    {
-			        "featureType": "landscape",
-			        "stylers": [
-			            {
-			                "color": "#f9ddc5"
-			            },
-			            {
-			                "lightness": -7
-			            }
-			        ]
-			    },
-			    {
-			        "featureType": "road",
-			        "stylers": [
-			            {
-			                "color": "#813033"
-			            },
-			            {
-			                "lightness": 43
-			            }
-			        ]
-			    },
-			    {
-			        "featureType": "poi.business",
-			        "stylers": [
-			            {
-			                "color": "#645c20"
-			            },
-			            {
-			                "lightness": 38
-			            }
-			        ]
-			    },
-			    {
-			        "featureType": "water",
-			        "stylers": [
-			            {
-			                "color": "#1994bf"
-			            },
-			            {
-			                "saturation": -69
-			            },
-			            {
-			                "gamma": 0.99
-			            },
-			            {
-			                "lightness": 43
-			            }
-			        ]
-			    },
-			    {
-			        "featureType": "road.local",
-			        "elementType": "geometry.fill",
-			        "stylers": [
-			            {
-			                "color": "#f19f53"
-			            },
-			            {
-			                "weight": 1.3
-			            },
-			            {
-			                "visibility": "on"
-			            },
-			            {
-			                "lightness": 16
-			            }
-			        ]
-			    },
-			    {
-			        "featureType": "poi.business"
-			    },
-			    {
-			        "featureType": "poi.park",
-			        "stylers": [
-			            {
-			                "color": "#645c20"
-			            },
-			            {
-			                "lightness": 39
-			            }
-			        ]
-			    },
-			    {
-			        "featureType": "poi.school",
-			        "stylers": [
-			            {
-			                "color": "#a95521"
-			            },
-			            {
-			                "lightness": 35
-			            }
-			        ]
-			    },
-			    {},
-			    {
-			        "featureType": "poi.medical",
-			        "elementType": "geometry.fill",
-			        "stylers": [
-			            {
-			                "color": "#813033"
-			            },
-			            {
-			                "lightness": 38
-			            },
-			            {
-			                "visibility": "off"
-			            }
-			        ]
-			    },
-			    {},
-			    {},
-			    {},
-			    {},
-			    {},
-			    {},
-			    {},
-			    {},
-			    {},
-			    {},
-			    {},
-			    {
-			        "elementType": "labels"
-			    },
-			    {
-			        "featureType": "poi.sports_complex",
-			        "stylers": [
-			            {
-			                "color": "#9e5916"
-			            },
-			            {
-			                "lightness": 32
-			            }
-			        ]
-			    },
-			    {},
-			    {
-			        "featureType": "poi.government",
-			        "stylers": [
-			            {
-			                "color": "#9e5916"
-			            },
-			            {
-			                "lightness": 46
-			            }
-			        ]
-			    },
-			    {
-			        "featureType": "transit.station",
-			        "stylers": [
-			            {
-			                "visibility": "off"
-			            }
-			        ]
-			    },
-			    {
-			        "featureType": "transit.line",
-			        "stylers": [
-			            {
-			                "color": "#813033"
-			            },
-			            {
-			                "lightness": 22
-			            }
-			        ]
-			    },
-			    {
-			        "featureType": "transit",
-			        "stylers": [
-			            {
-			                "lightness": 38
-			            }
-			        ]
-			    },
-			    {
-			        "featureType": "road.local",
-			        "elementType": "geometry.stroke",
-			        "stylers": [
-			            {
-			                "color": "#f19f53"
-			            },
-			            {
-			                "lightness": -10
-			            }
-			        ]
-			    },
-			    {},
-			    {},
-			    {}];
+{
+        "featureType": "all",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "all",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "saturation": 36
+            },
+            {
+                "color": "#000000"
+            },
+            {
+                "lightness": 40
+            }
+        ]
+    },
+    {
+        "featureType": "all",
+        "elementType": "labels.text.stroke",
+        "stylers": [
+            {
+                "visibility": "on"
+            },
+            {
+                "color": "#000000"
+            },
+            {
+                "lightness": 16
+            }
+        ]
+    },
+    {
+        "featureType": "all",
+        "elementType": "labels.icon",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative",
+        "elementType": "geometry.fill",
+        "stylers": [
+            {
+                "color": "#000000"
+            },
+            {
+                "lightness": 20
+            }
+        ]
+    },
+    {
+        "featureType": "administrative",
+        "elementType": "geometry.stroke",
+        "stylers": [
+            {
+                "color": "#000000"
+            },
+            {
+                "lightness": 17
+            },
+            {
+                "weight": 1.2
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.country",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "color": "#e5c163"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.locality",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "color": "#c4c4c4"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.neighborhood",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "color": "#e5c163"
+            }
+        ]
+    },
+    {
+        "featureType": "landscape",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#000000"
+            },
+            {
+                "lightness": 20
+            }
+        ]
+    },
+    {
+        "featureType": "poi",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#000000"
+            },
+            {
+                "lightness": 21
+            },
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.business",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "geometry.fill",
+        "stylers": [
+            {
+                "color": "#e5c163"
+            },
+            {
+                "lightness": "0"
+            }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "geometry.stroke",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "color": "#ffffff"
+            }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "labels.text.stroke",
+        "stylers": [
+            {
+                "color": "#e5c163"
+            }
+        ]
+    },
+    {
+        "featureType": "road.arterial",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#000000"
+            },
+            {
+                "lightness": 18
+            }
+        ]
+    },
+    {
+        "featureType": "road.arterial",
+        "elementType": "geometry.fill",
+        "stylers": [
+            {
+                "color": "#575757"
+            }
+        ]
+    },
+    {
+        "featureType": "road.arterial",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "color": "#ffffff"
+            }
+        ]
+    },
+    {
+        "featureType": "road.arterial",
+        "elementType": "labels.text.stroke",
+        "stylers": [
+            {
+                "color": "#2c2c2c"
+            }
+        ]
+    },
+    {
+        "featureType": "road.local",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#000000"
+            },
+            {
+                "lightness": 16
+            }
+        ]
+    },
+    {
+        "featureType": "road.local",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "color": "#999999"
+            }
+        ]
+    },
+    {
+        "featureType": "transit",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#000000"
+            },
+            {
+                "lightness": 19
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#000000"
+            },
+            {
+                "lightness": 17
+            }
+        ]
+    }];
 
 
-// GOogle JavaScript Maps API
-// Set variables as global 
-var markers = [];
 
-// If map failed to load
-function mapError() {
-	alert("Google Map failed to load. Please try again.")
-}
-
-// Google maps
-// Initiate map
+// Initiate Google maps
+// Activated through the api key link in map.html.
 function initMap() {
-	var map = new google.maps.Map(document.getElementById('map'), {
-		zoom: 13,
-		// Set center at Coit Tower
-		center: {lat: 37.8024, lng: 122.4058},
-		mapTypeControl: true,
-		mapTypeControlOption: {
-			style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
-			position: google.maps.ControlPosition.BOTTOM_CENTER
-		},
-		styles: styles
+	map = new google.maps.Map(document.getElementById('map'), {
+	zoom: 13,
+	// Set center at Coit Tower.
+	center: {lat: 37.8024, lng: 122.4058},
+	styles: styles
 	});
-	var infoWindow = new google.maps.InfoWindow();
-	var geocoding = new google.maps.Geocoder();
+	// Initiate geocoder
+	geocoder = new google.maps.Geocoder();
 
-	// Using the addresses to get the Lat and Lng thru geocodeAddress.
-	Locations.forEach(function(location){
-		geocodeAddress(geocoding, map, location);
-	});
+	// Initiate infoWindow
+	infoWindow = new google.maps.InfoWindow();
 
-	ko.applyBindings(new mapView());
-
-}
-
-// Converting the addresses into lats and lngs
-function geocodeAddress(geocoding, resultsMap, place) {
-	// grab the street address from markers.js
-	var address = Locations.streetAddress
-
-	// If the address exists, place a marker on the location
-	// Else, return error message
-	geocoding.geocode({'address': address}, function(results, status){
-		if (status === 'OK') {
-			resultsMap.setCenter(results[0].geometry.location);
-			place.marker = new google.maps.Marker({
-				map: resultsMap,
-				position: results[0].geometry.location,
-				animation: google.Maps.Animation.DROP
-			});
-
-			google.maps.event.addListener(place.marker, 'click', function() {
-				getYelpSearch(location);
-				toggleBounce(location.marker);
-			});
-
-			markers.push ({
-				name: location.name,
-				marker: lcoation.marker
-			});
-
-		} else {
-			alert('Geocode was not successful fo the following reason: ' + status);
-		}
+	// For each address on Locations array,
+	// call function geocodeAddress() on it.
+	Locations.forEach(function(location) {
+	geocodeAddress(geocoder, map, location);
 	});
 }
 
-// Make the marker jump when clicked
+
+function geocodeAddress(geocoder, resultsMap, location) {
+    // var address = document.getElementById('address').value;
+    var address = location.address;
+
+    geocoder.geocode( { 'address': address}, function(results, status) {
+		if (status == 'OK') {
+		resultsMap.setCenter(results[0].geometry.location);
+		var marker = new google.maps.Marker({
+		    map: resultsMap,
+		    position: results[0].geometry.location
+		});
+		// When a marker is clicked, marker will bounce and
+		// Yelp api will be called.
+		google.maps.event.addListener(place.marker, 'click', function() {
+			yelpSearch(location);
+			toggleBounce(location.marker);
+		});
+
+		markers.push({
+			name: location.name,
+			marker: location.marker
+		});
+
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+  }
+
+
+// When a marker is clicked, make it bounce.
 function toggleBounce(marker) {
 	if (marker.getAnimation() !== null) {
 		marker.setAnimation(null);
@@ -319,6 +378,9 @@ function toggleBounce(marker) {
 	}
 }
 
+
+// When an item is clicked, open its corresponding
+// window to display info.
 function clickedMarker(name) {
 	markers.forEach(function(eachMarker) {
 		if (eachMarker.name == name) {
@@ -328,62 +390,54 @@ function clickedMarker(name) {
 }
 
 
-// Yelp Search API
-function getYelpSearch() {
-	const search_url = "https://api.yelp.com/v3/businesses/search";
-	const yelp = require('yelp-fusion');
+// Use Yelp Search API to get information on each location.
+function yelpSearch(location) {
+	var search_url = "https://api.yelp.com/v3/businesses/search"
 	// Place holder for Yelp Fusion's API Key. Grab them
 	// from https://www.yelp.com/developers/v3/manage_app
-	const apiKey = 'E6aW2ikgxQGFRFbdpyPfUGr9ElR3Ie29RFR6YI_OgJXeBUL7XjPD3dgdbgdumZ836300GoRUmHryG0pBq2KSxH1Df82xTEOsFCppVPms3tQRUDjjbJeDdAvWYxajWnYx';
-
-	parameters = [];
-	parameters.push(['term', terms]);
-	parameters.push(['location', near]);
-	parameters.push(['callback', 'cb']);
-	parameters.push(['oauth_consumer_key', auth.consumerKey]);
-	parameters.push(['oauth_consumer_secret', auth.consumerSecret]);
-	parameters.push(['oauth_token', auth.accessToken]);
-	parameters.push(['oauth_signature_method', 'HMAC-SHA1']);
+	var apiKey = 'E6aW2ikgxQGFRFbdpyPfUGr9ElR3Ie29RFR6YI_OgJXeBUL7XjPD3dgdbgdumZ836300GoRUmHryG0pBq2KSxH1Df82xTEOsFCppVPms3tQRUDjjbJeDdAvWYxajWnYx';
+	
+	var yelpTimeout = setTimeout(function(){
+		console.log("failed to get yelp resources");
+	}, 8000);
 
 	$.ajax({
 		url: search_url,
 		data: parameters,
 		cache: true,
 		dataType: 'jsonp'
-	}).done(function(data){
-		var rating = data.businesses[0].rating_img_url;
-		var review_count = data.businesses[0].review_count;
-		var phone = data.businesses[0].display_phone;
-		var snippet = data.businesses[0].snippet_text;
-		var link = data.business[0].url;
-		var category = data.businesses[0].categories[0][0];
-		var picture = data.businesses[0].image_url;
-
-		// display local information on the infoWindow
-		var content = '<div><h3>' + locations.title + '</h3>' + 
-		'<img href=">' + picture + '">' +
-		'<p>' + place.address + '</p>' +
-		'<p><strong>Category: </strong>' + category + '</p>' + 
-		'<p><strong>Yelp Ratings: </strong>' + 
-		'<p><strong>Number of reviews: </strong>' +
-		'<p><strong>Phone: </strong>' + phone +'</p>' + 
-		'<img src = "' + rating + '"></p>' +
-		'<p><strong>Reviews: </strong>' + snippet + '<a href="' + link + '">Read more</a></p>' +
-		'</div>';
-		infoWindow.setContent(contentString);
-		infoWindow.open(map, place.marker);
-	}). fail(function() {
+		}).done(function(data){
+			var rating = data.businesses[0].rating_img_url;
+			var review_count = data.businesses[0].review_count;
+			var phone = data.businesses[0].display_phone;
+			var snippet = data.businesses[0].snippet_text;
+			var link = data.business[0].url;
+			var category = data.businesses[0].categories[0][0];
+			var picture = data.businesses[0].image_url;
+			// display local information on the infoWindow
+			var content = '<div><h3>' + locations.title + '</h3>' + 
+			'<img href=">' + picture + '">' +
+			'<p>' + place.address + '</p>' +
+			'<p><strong>Category: </strong>' + category + '</p>' + 
+			'<p><strong>Yelp Ratings: </strong>' + 
+			'<p><strong>Number of reviews: </strong>' +
+			'<p><strong>Phone: </strong>' + phone +'</p>' + 
+			'<img src = "' + rating + '"></p>' +
+			'<p><strong>Reviews: </strong>' + snippet + '<a href="' + link + '">Read more</a></p>' +
+			'</div>';
+		}). fail(function() {
 		alert("Yelp review failed to load. Please try again.")
-	});
+		});
+	}
 }
 
 
 // View function
-var mapView = function() {
+var mapViewModel = function() {
 	var self = this;
 
 	this.filter = ko.observable("");
-
+	// Location filter based on input.
 	this.filteredLocations = ko.computed(function() {
 		var filter = self.filter().toLowerCase();
 		if (!filter) {
@@ -405,4 +459,18 @@ var mapView = function() {
 			});
 		}
 	});
+}
+
+
+function startMap() {
+	initMap();
+	var mapViewModel = new mapViewModel();
+	// Bind the variables in initMap to mapView().
+	ko.applyBindings(mapViewModel);
+}
+
+
+// Show an error message when map failed to load.
+function mapError() {
+	alert("Google Map failed to load. Please try again.")
 }
