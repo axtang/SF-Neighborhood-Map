@@ -37,6 +37,32 @@
 	    <div id="map"> 
       </div>
 	</div>
+  <script>
+    // Google maps
+    // Initiate map
+    function initMap() {
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 13,
+        // Set center at Coit Tower
+        center: {lat: 37.8024, lng: 122.4058},
+        mapTypeControl: true,
+        mapTypeControlOption: {
+          style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+          position: google.maps.ControlPosition.BOTTOM_CENTER
+        },
+        styles: styles
+      });
+      var infoWindow = new google.maps.InfoWindow();
+      var geocoding = new google.maps.Geocoder();
+
+      // Using the addresses to get the Lat and Lng thru geocodeAddress.
+      Locations.forEach(function(location){
+        geocodeAddress(geocoding, map, location);
+      });
+
+      ko.applyBindings(new mapView());
+    }
+  </script>
   <script src="js/app.js"></script>
   <script>
     $("#menu-toggle").click(function(e){
@@ -45,7 +71,7 @@
     });
   </script>
   <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtDPqHpdtLeRkNH9Sqz5FpZUFi4aW7cpk" type="text/javascript">
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtDPqHpdtLeRkNH9Sqz5FpZUFi4aW7cpk&v=3.31" type="text/javascript">
   </script>"
   </body>
 </html>
