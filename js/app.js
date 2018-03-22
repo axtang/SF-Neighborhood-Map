@@ -312,30 +312,6 @@ var styles = [
     }];
 
 
-
-// Initiate Google maps
-// Activated through the api key link in map.html.
-function initMap() {
-	map = new google.maps.Map(document.getElementById('map'), {
-	zoom: 13,
-	// Set center at Coit Tower.
-	center: {lat: 37.8024, lng: 122.4058},
-	styles: styles
-	});
-	// Initiate geocoder
-	geocoder = new google.maps.Geocoder();
-
-	// Initiate infoWindow
-	infoWindow = new google.maps.InfoWindow();
-
-	// For each address on Locations array,
-	// call function geocodeAddress() on it.
-	Locations.forEach(function(location) {
-	geocodeAddress(geocoder, map, location);
-	});
-}
-
-
 function geocodeAddress(geocoder, resultsMap, location) {
     // var address = document.getElementById('address').value;
     var address = location.address;
@@ -490,9 +466,40 @@ function yelpSearch(location) {
 			'<p><strong>Reviews: </strong>' + snippet + '<a href="' + link + '">Read more</a></p>' +
 			'</div>';
 		}). fail(function() {
-		alert("Yelp review failed to load. Please try again.")
+			alert("Yelp review failed to load. Please try again.")
 		});
-	}
+}
+
+
+
+// Show an error message when map failed to load.
+function mapError() {
+	alert("Google Map failed to load. Please try again.")
+}
+
+
+// Initiate Google maps
+// Activated through the api key link in map.html.
+function initMap() {
+	map = new google.maps.Map(document.getElementById('map'), {
+	zoom: 13,
+	// Set center at Coit Tower.
+	center: {lat: 37.8024, lng: 122.4058},
+	styles: styles
+	});
+	// Initiate geocoder
+	geocoder = new google.maps.Geocoder();
+
+	// Initiate infoWindow
+	infoWindow = new google.maps.InfoWindow();
+
+	// For each address on Locations array,
+	// call function geocodeAddress() on it.
+	Locations.forEach(function(location) {
+	geocodeAddress(geocoder, map, location);
+	});
+	//google.maps.event.addDomListener(window, "load", initMap);
+	ko.applyBindings(new mapViewModel());
 }
 
 
@@ -523,18 +530,4 @@ var mapViewModel = function() {
 			});
 		}
 	});
-}
-
-
-function startMap() {
-	initMap();
-	var mapViewModel = new mapViewModel();
-	// Bind the variables in initMap to mapView().
-	ko.applyBindings(mapViewModel);
-}
-
-
-// Show an error message when map failed to load.
-function mapError() {
-	alert("Google Map failed to load. Please try again.")
 }
