@@ -4,7 +4,7 @@
 var ko;
 var google;
 var map;
-var markers;
+var markers = [];
 var geocoder;
 var infoWindow;
 
