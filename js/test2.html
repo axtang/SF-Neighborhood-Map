@@ -196,41 +196,41 @@
         // Normally we'd have these in a database instead.
         var locations = [
 
-			{
-				title: "Palace of Fine Art Theatre",
-				location: {lat: 37.801991, lng: -122.448656},
-			},
+      {
+        title: "Palace of Fine Art Theatre",
+        location: {lat: 37.801991, lng: -122.448656},
+      },
 
-			{
-				title: "Google Launch Pad",
-				location: {lat: 37.789541, lng: -122.394228},
-			},
+      {
+        title: "Google Launch Pad",
+        location: {lat: 37.789541, lng: -122.394228},
+      },
 
-			{
-				title: "California Academy of Sciences",
-				location: {lat: 37.769865, lng: -122.466095},
-			},
+      {
+        title: "California Academy of Sciences",
+        location: {lat: 37.769865, lng: -122.466095},
+      },
 
-			{
-				title: "Exploratorium",
-				location: {lat: 37.801542, lng: -122.397484},
-			},
+      {
+        title: "Exploratorium",
+        location: {lat: 37.801542, lng: -122.397484},
+      },
 
-			{
-				title: "Crissy Field",
-				location: {lat: 37.805810, lng: -122.449068},
-			},
+      {
+        title: "Crissy Field",
+        location: {lat: 37.805810, lng: -122.449068},
+      },
 
-			{
-				title: "Lands End",
-				location: {lat: 37.779764, lng: -122.511594},
-			},
+      {
+        title: "Lands End",
+        location: {lat: 37.779764, lng: -122.511594},
+      },
 
-			{
-				title: "Mount Tamalpis State Park",
-				location: {lat: 37.904554, lng: -122.613312},
-			}
-			];
+      {
+        title: "Mount Tamalpis State Park",
+        location: {lat: 37.904554, lng: -122.613312},
+      }
+      ];
 
         var largeInfowindow = new google.maps.InfoWindow();
 
@@ -296,23 +296,23 @@
       }
 
 
-		// This function will loop through the markers array and display them all.
-		function showListings() {
-			var bounds = new google.maps.LatLngBounds();
-			// Extend the boundaries of the map for each marker and display the marker
-			for (var i = 0; i < markers.length; i++) {
-				markers[i].setMap(map);
-				bounds.extend(markers[i].position);
-			}
-			map.fitBounds(bounds);
-		}
+    // This function will loop through the markers array and display them all.
+    function showListings() {
+      var bounds = new google.maps.LatLngBounds();
+      // Extend the boundaries of the map for each marker and display the marker
+      for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(map);
+        bounds.extend(markers[i].position);
+      }
+      map.fitBounds(bounds);
+    }
 
-		// This function will loop through the listings and hide them all.
-		function hideMarkers(markers) {
-			for (var i = 0; i < markers.length; i++) {
-				markers[i].setMap(null);
-			}
-		}
+    // This function will loop through the listings and hide them all.
+    function hideMarkers(markers) {
+      for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+      }
+    }
 
 
 
@@ -331,6 +331,9 @@
           });
           // Open the infowindow on the correct marker.
           infowindow.open(map, marker);
+          var nearStreetViewLocation = data.location.latLng;
+          var heading = google.maps.geometry.spherical.computeHeading(
+            nearStreetViewLocation, marker.position);
       }}
 
       // This function will loop through the markers array and display them all.
