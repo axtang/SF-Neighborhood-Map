@@ -618,6 +618,67 @@
       });
     }
 
+
+
+    // Generate a random number for use in Yelp API Oauth.
+    function generateNonce() {
+      return (Math.floor(Math.random() * 1e12).toString())
+    }
+
+    //Use Yelp API to search business information.
+    function getYelpInfo(place) {
+      var yelp_url = "https://api.yelp.com/v3/businesses/search";
+      var consumer_secret = "";
+      var token_secret = "";
+
+      // Create parameters that are used for Ajax request.
+      var params = {
+        oauth_consumer_key: "",
+        oauth_token: "",
+        oauth_signature_method: 'HMAC-SHA1',
+        oauth_timestamp: Math.floor(Date.now()/1000),
+        oauth_nonce: generateNonce(),
+        oauth_version: '1.0',
+        callback: 'cb',
+        term: place.name,
+        location: 'San Francisco, CA',
+        limit: 1
+      }
+
+      // Generate Oauth signature
+      var encodedSignature = oauthSignature.generate('GET', yelp_url, params, consumer_secret, token_secret);
+      params.oauth_signature = encodedSignature;
+
+      // Perform an Ajax request
+      $.ajax({
+        url: yelp_url,
+        data: params,
+        cache: true,
+        dataType: 'jsonp'
+      }).done(function(data) {
+        var phone = data.businesses[0].display_phone;
+        var rating = data.businesses[0].rating_img_url;
+        var snippet = data.businesses[0].snippet_text;
+        var link = data.businesses[0].url;
+        var category = data.businesses[0].categories[0][0];
+
+        // Create info window that displays information of a location.
+        var contentString = '<div><h3>'+ place.name + '</h3>'+
+          '<p>'+ place.address + '</p>' +
+                '<p><strong>Category: </strong>'+ category + '</p>'+
+          '<p><strong>Phone: </strong>'+ phone + '</p>' +
+          '<p><strong>Yelp Ratings: </strong>'+ '<img src="'+ rating + '"></p>' +
+          '<p><strong>Reviews: </strong>'+ snippet +'<a href="'+ link + '">Read more</a></p>'+
+          '</div>';
+        infoWindow.setContent(contentString);
+        infoWindow.open(map, place.marker);
+
+      }).fail(function() {
+        // Pop up window that alerts users if Yelp API failed to load.
+        alert("Failed to load Yelp.");
+      });
+    }
+
     </script>
 
     <script async defer
